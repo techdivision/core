@@ -47,5 +47,4 @@ interface InputAdapterInterface
      * @return \Iterator
      */
     public function filterData(string $keyValueFilter): array;
-
 }

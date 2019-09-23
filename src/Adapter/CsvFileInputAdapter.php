@@ -20,6 +20,9 @@ declare(strict_types=1);
 
 namespace TechDivision\Core\Adapter;
 
+use TechDivision\Core\File\CsvFileInterface;
+use TechDivision\Core\File\SimpleCsvFile;
+
 /**
  * Class CsvFileInputAdapter
  * @package TechDivision\Core\Adapter
@@ -52,9 +55,8 @@ class CsvFileInputAdapter implements InputAdapterInterface
 
     /**
      * @param $indexKey
-     * @return void
      */
-    protected function generateIndex($indexKey)
+    protected function generateIndex($indexKey): void
     {
         // go to the beginning of the file
         $this->csvFile->rewindToDataPosition();
@@ -71,22 +73,22 @@ class CsvFileInputAdapter implements InputAdapterInterface
     /**
      * @return array
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->csvFile->getHeaders();
     }
 
     /**
-     * @return \Iterator|CsvFileInterface|SimpleCsvFile
+     * @return \Iterator
      */
-    public function getData()
+    public function getData(): \Iterator
     {
         return $this->csvFile;
     }
 
     /**
      * @param string $keyValue
-     * @return \Iterator
+     * @return array
      */
     public function findData(string $keyValue): array
     {
@@ -99,7 +101,7 @@ class CsvFileInputAdapter implements InputAdapterInterface
 
     /**
      * @param string $keyValueFilter
-     * @return \Iterator
+     * @return array
      */
     public function filterData(string $keyValueFilter): array
     {
@@ -121,9 +123,9 @@ class CsvFileInputAdapter implements InputAdapterInterface
 
     /**
      * @param array $filePositions
-     * @return array|mixed
+     * @return array
      */
-    protected function findRowsByFilePositions(array $filePositions)
+    protected function findRowsByFilePositions(array $filePositions): array
     {
         $rows = [];
         foreach ($filePositions as $position) {
@@ -135,5 +137,4 @@ class CsvFileInputAdapter implements InputAdapterInterface
         // finally return all rows
         return $rows;
     }
-
 }

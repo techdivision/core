@@ -115,7 +115,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
      * @param null $context
      * @return bool
      */
-    public function open($filename, $mode, $use_include_path = null)
+    public function open($filename, $mode, $use_include_path = false)
     {
         return $this->fileHandle = fopen($filename, $mode, $use_include_path);
     }
@@ -139,6 +139,15 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
             return array_combine($this->getHeaders(), $rowData);
         }
         return $rowData;
+    }
+
+    /**
+     * @param array $row
+     * @return bool|int
+     */
+    public function putcsv(array $row)
+    {
+        return fputcsv($this->fileHandle, $row, $this->separator);
     }
 
     /**

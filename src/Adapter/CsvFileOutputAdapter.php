@@ -20,28 +20,28 @@ declare(strict_types=1);
 
 namespace TechDivision\Core\Adapter;
 
+use TechDivision\Core\File\CsvFileInterface;
+use TechDivision\Core\File\SimpleCsvFile;
+
 /**
  * Class CsvFileOutputAdapter
  * @package TechDivision\Core\Adapter
  */
 class CsvFileOutputAdapter implements OutputAdapterInterface
 {
-    protected $data;
+    /**
+     * @var CsvFileInterface
+     */
+    protected $csvFile;
 
-    protected $headers = [];
-
-    protected $handle;
-
-    protected $separator;
     /**
      * CsvFileOutputAdapter constructor.
      * @param string $csvFilename
-     * @param string $separator
+     * @param string $csvSeparator
      */
-    public function __construct(string $fileName, string $separator)
+    public function __construct(string $csvFilename, $csvSeparator = ";")
     {
-        $this->handle = $fp = fopen($fileName, 'w');
-        $this->separator = $separator;
+        $this->csvFile = new SimpleCsvFile($csvFilename, $csvSeparator);
     }
 
     /**
@@ -50,17 +50,11 @@ class CsvFileOutputAdapter implements OutputAdapterInterface
      */
     public function setData(array $data)
     {
-        if (empty($this->headers)) {
-            $this->headers = array_keys($data);
+        // check if first line
+        if ($this->csvFile->tell() === 0) {
+            // write headers first
+            $this->csvFile->putcsv(array_keys($data));
         }
-        $this->data[] = $data;
-    }
-
-    public function writeCsv()
-    {
-        fputcsv($this->handle, $this->headers);
-        foreach ($this->data as $row) {
-            fputcsv($this->handle, $row);
-        }
+        $this->csvFile->putcsv($data);
     }
 }

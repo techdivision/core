@@ -34,6 +34,13 @@ interface CsvFileInterface extends FileInterface
     public function getcsv($withHeaders = true);
 
     /**
+     * Format line as CSV and write to file pointer
+     * @param array $row
+     * @return mixed
+     */
+    public function putcsv(array $row);
+
+    /**
      * @return array
      */
     public function getHeaders();

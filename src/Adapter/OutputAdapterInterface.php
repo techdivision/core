@@ -31,5 +31,4 @@ interface OutputAdapterInterface
      * @return mixed
      */
     public function setData(array $data);
-
 }
