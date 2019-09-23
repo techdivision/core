@@ -1,0 +1,17 @@
+{
+  "name": "techdivision/core",
+  "description": "Interfaces and implementations for abstract usage to ensure compatibility between projects",
+  "license": "OSL-3.0",
+  "authors": [
+    {
+      "name": "Johann Zelger",
+      "email": "j.zelger@techdivision.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.3"
+  }
+}
