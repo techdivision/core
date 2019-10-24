@@ -107,7 +107,7 @@ class CsvFileInputAdapter implements InputAdapterInterface
     {
         // filter array key by given value filter
         $filtered = array_filter($this->index, function ($k) use ($keyValueFilter) {
-            return preg_match('/' . str_replace('/', '\/', $keyValueFilter) . '/', $k);
+            return preg_match('/' . str_replace('/', '\/', $keyValueFilter) . '/', "$k");
         }, ARRAY_FILTER_USE_KEY);
 
         // init filtered rows variable
