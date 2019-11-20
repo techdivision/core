@@ -64,9 +64,10 @@ class CsvFileInputAdapter implements InputAdapterInterface
             // get current file position
             $filePosition = $this->csvFile->tell();
             // read corresponding row
-            $csvRow = $this->csvFile->getcsv();
-            // save file position with related csv rows field value
-            $this->index[$csvRow[$indexKey]][] = $filePosition;
+            if ($csvRow = $this->csvFile->getcsv()) {
+                // save file position with related csv rows field value
+                $this->index[$csvRow[$indexKey]][] = $filePosition;
+            }
         }
     }
 
