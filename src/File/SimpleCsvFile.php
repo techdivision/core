@@ -136,7 +136,10 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
         $rowData = fgetcsv($this->fileHandle, 0, $this->separator);
 
         if ($withHeaders === true && $rowData !== false) {
-            return array_combine($this->getHeaders(), $rowData);
+            return array_combine(
+                $this->getHeaders() + array_keys($rowData), $rowData
+            );
+            //return array_combine($this->getHeaders(), $rowData);
         }
         return $rowData;
     }
@@ -248,3 +251,4 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
         return $valid;
     }
 }
+
