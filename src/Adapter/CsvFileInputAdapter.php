@@ -40,23 +40,29 @@ class CsvFileInputAdapter implements InputAdapterInterface
     protected $index = [];
 
     /**
+     * @var array
+     */
+    protected $cache = [];
+
+    /**
      * CsvFileInputAdapter constructor.
      * @param string $csvFilename
      * @param string $csvSeparator
      * @param null $indexKey
+     * @param bool $caching
      */
-    public function __construct(string $csvFilename, $csvSeparator = ";", $indexKey = null)
+    public function __construct(string $csvFilename, $csvSeparator = ";", $indexKey = null, $caching = false)
     {
         $this->csvFile = new SimpleCsvFile($csvFilename, $csvSeparator);
         if ($indexKey !== null) {
-            $this->generateIndex($indexKey);
+            $this->generateIndex($indexKey, $caching);
         }
     }
 
     /**
      * @param $indexKey
      */
-    protected function generateIndex($indexKey): void
+    protected function generateIndex($indexKey, $caching): void
     {
         // go to the beginning of the file
         $this->csvFile->rewindToDataPosition();
@@ -67,6 +73,10 @@ class CsvFileInputAdapter implements InputAdapterInterface
             if ($csvRow = $this->csvFile->getcsv()) {
                 // save file position with related csv rows field value
                 $this->index[$csvRow[$indexKey]][] = $filePosition;
+                // cache complete csv row if enabled
+                if ($caching === true) {
+                    $this->cache[$filePosition] = $csvRow;
+                }
             }
         }
     }
@@ -130,12 +140,19 @@ class CsvFileInputAdapter implements InputAdapterInterface
     {
         $rows = [];
         foreach ($filePositions as $position) {
-            // go to indexed position
-            $this->csvFile->seek($position);
-            // add row appened with headers as array keys
-            $rows[] = $this->csvFile->getcsv();
+            // check if cache is available and fill row with cached data
+            if (isset($this->cache[$position])) {
+                $row = $this->cache[$position];
+                // if no cache is available read csv by position on demand
+            } else {
+                // go to indexed position
+                $this->csvFile->seek($position);
+                // add row appened with headers as array keys
+                $row = $this->csvFile->getcsv();
+            }
+            $rows[] = $row;
         }
-        // finally return all rows
+        // finally return all found rows
         return $rows;
     }
 }
