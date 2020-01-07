@@ -45,6 +45,16 @@ class CsvFileInputAdapter implements InputAdapterInterface
     protected $cache = [];
 
     /**
+     * @var null|string
+     */
+    protected $indexKey;
+
+    /**
+     * @var bool
+     */
+    protected $caching = false;
+
+    /**
      * CsvFileInputAdapter constructor.
      * @param string $csvFilename
      * @param string $csvSeparator
@@ -54,8 +64,17 @@ class CsvFileInputAdapter implements InputAdapterInterface
     public function __construct(string $csvFilename, $csvSeparator = ";", $indexKey = null, $caching = false)
     {
         $this->csvFile = new SimpleCsvFile($csvFilename, $csvSeparator);
-        if ($indexKey !== null) {
-            $this->generateIndex($indexKey, $caching);
+        $this->indexKey = $indexKey;
+        $this->caching = $caching;
+    }
+
+    /**
+     * Initialise adapter by generating csv index and caching if enabled
+     */
+    public function init(): void
+    {
+        if ($this->indexKey !== null) {
+            $this->generateIndex($this->indexKey, $this->caching);
         }
     }
 

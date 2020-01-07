@@ -27,6 +27,12 @@ namespace TechDivision\Core\Adapter;
 interface InputAdapterInterface
 {
     /**
+     * Initialise adapter
+     * @return void
+     */
+    public function init(): void;
+
+    /**
      * @return array
      */
     public function getFields();
