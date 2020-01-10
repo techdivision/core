@@ -27,13 +27,10 @@ namespace TechDivision\Core\File;
 interface FileInterface {
 
     /**
-     * Opens file or URL
-     * @param $filename
-     * @param $mode
-     * @param null $use_include_path
-     * @return bool|resource a file pointer resource on success, or false on error.
+     * Opens file
+     * @return mixed
      */
-    public function open($filename, $mode, $use_include_path = null);
+    public function open();
 
     /**
      * Closes an open file pointer

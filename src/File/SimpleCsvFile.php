@@ -27,6 +27,11 @@ namespace TechDivision\Core\File;
 class SimpleCsvFile implements CsvFileInterface, \Iterator
 {
     /**
+     * @var string
+     */
+    protected $filename;
+
+    /**
      * @var resource
      */
     protected $fileHandle;
@@ -35,6 +40,16 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
      * @var string
      */
     protected $separator;
+
+    /**
+     * @var string
+     */
+    protected $open_mode;
+
+    /**
+     * @var string
+     */
+    protected $use_include_path;
 
     /**
      * @var int
@@ -72,14 +87,12 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
      * @param string $separator
      * @param string $open_mode
      */
-    public function __construct($filename, $separator = ";", $open_mode = 'r')
+    public function __construct($filename, $separator = ";", $open_mode = 'r', $use_include_path = false)
     {
-        // set fileHandle resource
-        $this->open($filename, $open_mode);
-        // set separator
+        $this->filename = $filename;
         $this->separator = $separator;
-        // read header by default
-        $this->getHeaders();
+        $this->open_mode = $open_mode;
+        $this->use_include_path = $use_include_path;
     }
 
     /**
@@ -109,15 +122,18 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * @param $filename
-     * @param $mode
-     * @param null $use_include_path
-     * @param null $context
-     * @return bool
+     * @return bool|false|resource
      */
-    public function open($filename, $mode, $use_include_path = false)
+    public function open()
     {
-        return $this->fileHandle = fopen($filename, $mode, $use_include_path);
+        $this->fileHandle = fopen(
+            $this->filename,
+            $this->open_mode,
+            $this->use_include_path
+        );
+        // read header by default
+        $this->getHeaders();
+        return $this->fileHandle;
     }
 
     /**

@@ -45,6 +45,14 @@ class CsvFileOutputAdapter implements OutputAdapterInterface
     }
 
     /**
+     * Initialise adapter
+     */
+    public function init(): void
+    {
+        $this->csvFile->open();
+    }
+    
+    /**
      * @param array $data
      * @return mixed|void
      */

@@ -73,6 +73,7 @@ class CsvFileInputAdapter implements InputAdapterInterface
      */
     public function init(): void
     {
+        $this->csvFile->open();
         if ($this->indexKey !== null) {
             $this->generateIndex($this->indexKey, $this->caching);
         }

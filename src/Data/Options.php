@@ -71,7 +71,7 @@ class Options implements DataObjectInterface
      */
     public function has(string $option): bool
     {
-        return isset($this->data[$option]);
+       return isset($this->data[$option]);
     }
 
     /**

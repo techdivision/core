@@ -10,9 +10,8 @@
  * PHP version 7
  *
  * @author    Johann Zelger <j.zelger@techdivision.com>
- * @copyright 2019 TechDivision GmbH <info@techdivision.com>
+ * @copyright 2020 TechDivision GmbH <info@techdivision.com>
  * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      https://github.com/techdivision/core
  * @link      https://www.techdivision.com
  */
 
@@ -21,14 +20,14 @@ declare(strict_types=1);
 namespace TechDivision\Core\Adapter;
 
 /**
- * Interface OutputAdapterInterface
+ * Class AdapterInterface
  * @package TechDivision\Core\Adapter
  */
-interface OutputAdapterInterface extends AdapterInterface
+interface AdapterInterface
 {
     /**
-     * @param array $data
-     * @return mixed
+     * Initialise adapter
+     * @return void
      */
-    public function setData(array $data);
+    public function init(): void;
 }

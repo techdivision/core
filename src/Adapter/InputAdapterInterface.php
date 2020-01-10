@@ -24,14 +24,8 @@ namespace TechDivision\Core\Adapter;
  * Interface InputAdapterInterface
  * @package TechDivision\Core\Adapter
  */
-interface InputAdapterInterface
+interface InputAdapterInterface extends AdapterInterface
 {
-    /**
-     * Initialise adapter
-     * @return void
-     */
-    public function init(): void;
-
     /**
      * @return array
      */
