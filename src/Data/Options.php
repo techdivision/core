@@ -21,18 +21,25 @@ declare(strict_types=1);
 namespace TechDivision\Core\Data;
 
 /**
- * Class Options
- * @package TechDivision\Core\Data
+ * Options data handling implementation.
+ *
+ * @author    Johann Zelger <j.zelger@techdivision.com>
+ * @copyright 2019 TechDivision GmbH <info@techdivision.com>
+ * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://www.techdivision.com
  */
 class Options implements DataObjectInterface
 {
     /**
+     * Holds the data as array.
+     *
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * Options constructor.
+     *
      * @param array $options
      */
     public function __construct(array $options = [])
@@ -41,9 +48,7 @@ class Options implements DataObjectInterface
     }
 
     /**
-     * @param string $option
-     * @return mixed
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function get(string $option = null)
     {
@@ -57,8 +62,7 @@ class Options implements DataObjectInterface
     }
 
     /**
-     * @param string $option
-     * @param mixed $value
+     * {@inheritdoc}
      */
     public function set(string $option, $value)
     {
@@ -66,16 +70,15 @@ class Options implements DataObjectInterface
     }
 
     /**
-     * @param string $option
-     * @return bool
+     * {@inheritdoc}
      */
     public function has(string $option): bool
     {
-       return isset($this->data[$option]);
+        return isset($this->data[$option]);
     }
 
     /**
-     * @return void
+     * {@inheritdoc}
      */
     public function reset()
     {

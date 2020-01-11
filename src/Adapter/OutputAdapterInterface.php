@@ -21,14 +21,20 @@ declare(strict_types=1);
 namespace TechDivision\Core\Adapter;
 
 /**
- * Interface OutputAdapterInterface
- * @package TechDivision\Core\Adapter
+ * Interface for output adapters.
+ *
+ * @author    Johann Zelger <j.zelger@techdivision.com>
+ * @copyright 2019 TechDivision GmbH <info@techdivision.com>
+ * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://www.techdivision.com
  */
 interface OutputAdapterInterface extends AdapterInterface
 {
     /**
+     * Sets data on output adapter.
+     *
      * @param array $data
-     * @return mixed
+     * @return bool|int
      */
     public function setData(array $data);
 }

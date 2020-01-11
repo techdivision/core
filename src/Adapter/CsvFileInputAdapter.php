@@ -12,7 +12,6 @@
  * @author    Johann Zelger <j.zelger@techdivision.com>
  * @copyright 2019 TechDivision GmbH <info@techdivision.com>
  * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      https://github.com/techdivision/core
  * @link      https://www.techdivision.com
  */
 
@@ -20,42 +19,58 @@ declare(strict_types=1);
 
 namespace TechDivision\Core\Adapter;
 
+use Iterator;
 use TechDivision\Core\File\CsvFileInterface;
 use TechDivision\Core\File\SimpleCsvFile;
 
 /**
- * Class CsvFileInputAdapter
- * @package TechDivision\Core\Adapter
+ * CSV File InputAdapter implementation.
+ *
+ * @author    Johann Zelger <j.zelger@techdivision.com>
+ * @copyright 2019 TechDivision GmbH <info@techdivision.com>
+ * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://www.techdivision.com
  */
 class CsvFileInputAdapter implements InputAdapterInterface
 {
     /**
+     * Holds a csv file implementation.
+     *
      * @var CsvFileInterface
      */
-    protected $csvFile;
+    protected CsvFileInterface $csvFile;
 
     /**
+     * Holds index information for fast search.
+     *
      * @var array
      */
-    protected $index = [];
+    protected array $index = [];
 
     /**
+     * Holds data in cache if caching is enabled.
+     *
      * @var array
      */
-    protected $cache = [];
+    protected array $cache = [];
 
     /**
+     * The key where to generate the index for.
+     *
      * @var null|string
      */
     protected $indexKey;
 
     /**
+     * Caching flag for enable or disable caching functionality.
+     *
      * @var bool
      */
     protected $caching = false;
 
     /**
      * CsvFileInputAdapter constructor.
+     *
      * @param string $csvFilename
      * @param string $csvSeparator
      * @param null $indexKey
@@ -69,7 +84,9 @@ class CsvFileInputAdapter implements InputAdapterInterface
     }
 
     /**
-     * Initialise adapter by generating csv index and caching if enabled
+     * Initialise adapter by generating csv index and caching if enabled.
+     *
+     * @return void
      */
     public function init(): void
     {
@@ -80,9 +97,13 @@ class CsvFileInputAdapter implements InputAdapterInterface
     }
 
     /**
-     * @param $indexKey
+     * Generates the index for given key.
+     *
+     * @param string $indexKey
+     * @param bool $caching
+     * @return void
      */
-    protected function generateIndex($indexKey, $caching): void
+    protected function generateIndex(string $indexKey, bool $caching): void
     {
         // go to the beginning of the file
         $this->csvFile->rewindToDataPosition();
@@ -102,6 +123,8 @@ class CsvFileInputAdapter implements InputAdapterInterface
     }
 
     /**
+     * Returns all fields given in csv file.
+     *
      * @return array
      */
     public function getFields(): array
@@ -110,14 +133,18 @@ class CsvFileInputAdapter implements InputAdapterInterface
     }
 
     /**
-     * @return \Iterator
+     * Returns data as iterator object for being able to stream data while iterating.
+     *
+     * @return Iterator
      */
-    public function getData(): \Iterator
+    public function getData(): Iterator
     {
         return $this->csvFile;
     }
 
     /**
+     * Finds data by given value for defined index key.
+     *
      * @param string $keyValue
      * @return array
      */
@@ -131,6 +158,8 @@ class CsvFileInputAdapter implements InputAdapterInterface
     }
 
     /**
+     * Filters data by given value filter for defined index key.
+     *
      * @param string $keyValueFilter
      * @return array
      */
@@ -153,6 +182,8 @@ class CsvFileInputAdapter implements InputAdapterInterface
     }
 
     /**
+     * Returns data for given file positions array
+     *
      * @param array $filePositions
      * @return array
      */

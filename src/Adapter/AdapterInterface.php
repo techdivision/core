@@ -10,7 +10,7 @@
  * PHP version 7
  *
  * @author    Johann Zelger <j.zelger@techdivision.com>
- * @copyright 2020 TechDivision GmbH <info@techdivision.com>
+ * @copyright 2019 TechDivision GmbH <info@techdivision.com>
  * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      https://www.techdivision.com
  */
@@ -20,13 +20,18 @@ declare(strict_types=1);
 namespace TechDivision\Core\Adapter;
 
 /**
- * Class AdapterInterface
- * @package TechDivision\Core\Adapter
+ * Interface for adapters
+ *
+ * @author    Johann Zelger <j.zelger@techdivision.com>
+ * @copyright 2019 TechDivision GmbH <info@techdivision.com>
+ * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://www.techdivision.com
  */
 interface AdapterInterface
 {
     /**
      * Initialise adapter
+     *
      * @return void
      */
     public function init(): void;

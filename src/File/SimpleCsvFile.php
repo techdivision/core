@@ -21,74 +21,106 @@ declare(strict_types=1);
 namespace TechDivision\Core\File;
 
 /**
- * Class SimpleCsvFile
- * @package TechDivision\Core\File
+ * Simple csv file implementation as iterator for being able to stream data line by line while iterations.
+ *
+ * @author    Johann Zelger <j.zelger@techdivision.com>
+ * @copyright 2019 TechDivision GmbH <info@techdivision.com>
+ * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://www.techdivision.com
  */
 class SimpleCsvFile implements CsvFileInterface, \Iterator
 {
     /**
+     * The filename including the path relative or absolute.
+     *
      * @var string
      */
-    protected $filename;
+    protected string $filename;
 
     /**
+     * The file pointer as php resource.
+     *
      * @var resource
      */
     protected $fileHandle;
 
     /**
+     * The separator to use for csv parsing.
+     *
      * @var string
      */
-    protected $separator;
+    protected string $separator;
 
     /**
+     * How to open the file pointer.
+     *
      * @var string
      */
-    protected $open_mode;
+    protected string $open_mode;
 
     /**
-     * @var string
+     * If include path should be used when handling filename without path.
+     *
+     * @var bool
      */
-    protected $use_include_path;
+    protected bool $use_include_path;
 
     /**
+     * The file position where the data starts.
+     *
      * @var int
      */
-    protected $dataStartPosition;
+    protected int $dataStartPosition;
 
     /**
+     * Current parsed data in iteration process.
+     *
      * @var array
      */
-    protected $iteratorCurrentData = [];
+    protected array $iteratorCurrentData = [];
 
     /**
+     * Current iterator key.
+     *
      * @var int
      */
-    protected $iteratorKey = 0;
+    protected int $iteratorKey = 0;
 
     /**
+     * Current file position in iteration process.
+     *
      * @var int
      */
-    protected $iteratorCurrentPosition = 0;
+    protected int $iteratorCurrentPosition = 0;
 
     /**
+     * The file position to the next row.
+     *
      * @var int
      */
-    protected $iteratorNextPosition = 0;
+    protected int $iteratorNextPosition = 0;
 
     /**
+     * The parsed headers.
+     *
      * @var array
      */
-    protected $headers = [];
+    protected array $headers = [];
 
     /**
      * SimpleCsvFile constructor.
+     *
      * @param $filename
      * @param string $separator
      * @param string $open_mode
+     * @param bool $use_include_path
      */
-    public function __construct($filename, $separator = ";", $open_mode = 'r', $use_include_path = false)
-    {
+    public function __construct(
+        string $filename,
+        string $separator = ";",
+        string $open_mode = 'r',
+        bool $use_include_path = false
+    ) {
         $this->filename = $filename;
         $this->separator = $separator;
         $this->open_mode = $open_mode;
@@ -96,9 +128,9 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * @return array|false
+     * {@inheritDoc}
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         // if headers are not set yet
         if (empty($this->headers)) {
@@ -114,15 +146,15 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * @return int
+     * {@inheritDoc}
      */
-    public function rewindToDataPosition()
+    public function rewindToDataPosition(): int
     {
         return $this->seek($this->dataStartPosition);
     }
 
     /**
-     * @return bool|false|resource
+     * {@inheritDoc}
      */
     public function open()
     {
@@ -137,7 +169,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function close()
     {
@@ -145,24 +177,26 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * @return array|false|null
+     * {@inheritDoc}
      */
-    public function getcsv($withHeaders = true)
+    public function getcsv(bool $withHeaders = true)
     {
         $rowData = fgetcsv($this->fileHandle, 0, $this->separator);
 
         if ($withHeaders === true && $rowData !== false) {
+            // Returns tolerant key value combined array even if column count does not match headers count.
             return array_combine(
-                $this->getHeaders() + array_keys($rowData), $rowData
+                $this->getHeaders() + array_keys($rowData),
+                $rowData
             );
-            //return array_combine($this->getHeaders(), $rowData);
+            // An intolerant implementation of combining data to keys would be:
+            // return array_combine($this->getHeaders(), $rowData);
         }
         return $rowData;
     }
 
     /**
-     * @param array $row
-     * @return bool|int
+     * {@inheritDoc}
      */
     public function putcsv(array $row)
     {
@@ -170,7 +204,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * @return bool|string
+     * {@inheritDoc}
      */
     public function gets()
     {
@@ -178,8 +212,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * @param $position
-     * @return int Upon success, returns 0; otherwise, returns -1. Note that seeking
+     * {@inheritDoc}
      */
     public function seek($position)
     {
@@ -187,7 +220,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function eof()
     {
@@ -195,7 +228,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * @return bool|int
+     * {@inheritDoc}
      */
     public function tell()
     {
@@ -203,8 +236,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * Rewind the Iterator to the first element
-     * @return void Any returned value is ignored.
+     * {@inheritDoc}
      */
     public function rewind()
     {
@@ -215,8 +247,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * Return the current element
-     * @return mixed Can return any type.
+     * {@inheritDoc}
      */
     public function current()
     {
@@ -224,8 +255,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * Return the key of the current element
-     * @return mixed scalar on success, or null on failure.
+     * {@inheritDoc}
      */
     public function key()
     {
@@ -233,8 +263,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * Move forward to next element
-     * @return void Any returned value is ignored.
+     * {@inheritDoc}
      */
     public function next(): void
     {
@@ -242,8 +271,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     }
 
     /**
-     * Checks if current position is valid
-     * @return boolean The return value will be casted to boolean and then evaluated.
+     * {@inheritDoc}
      */
     public function valid()
     {
@@ -267,4 +295,3 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
         return $valid;
     }
 }
-

@@ -24,18 +24,25 @@ use TechDivision\Core\File\CsvFileInterface;
 use TechDivision\Core\File\SimpleCsvFile;
 
 /**
- * Class CsvFileOutputAdapter
- * @package TechDivision\Core\Adapter
+ * CSV file output adapter implementation.
+ *
+ * @author    Johann Zelger <j.zelger@techdivision.com>
+ * @copyright 2019 TechDivision GmbH <info@techdivision.com>
+ * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://www.techdivision.com
  */
 class CsvFileOutputAdapter implements OutputAdapterInterface
 {
     /**
+     * Holds a csv file implementation.
+     *
      * @var CsvFileInterface
      */
-    protected $csvFile;
+    protected CsvFileInterface $csvFile;
 
     /**
      * CsvFileOutputAdapter constructor.
+     *
      * @param string $csvFilename
      * @param string $csvSeparator
      */
@@ -46,6 +53,8 @@ class CsvFileOutputAdapter implements OutputAdapterInterface
 
     /**
      * Initialise adapter
+     *
+     * @return void
      */
     public function init(): void
     {
@@ -53,8 +62,10 @@ class CsvFileOutputAdapter implements OutputAdapterInterface
     }
     
     /**
+     * Sets data, means writes data directly to csv file.
+     *
      * @param array $data
-     * @return mixed|void
+     * @return bool|int
      */
     public function setData(array $data)
     {
@@ -63,6 +74,6 @@ class CsvFileOutputAdapter implements OutputAdapterInterface
             // write headers first
             $this->csvFile->putcsv(array_keys($data));
         }
-        $this->csvFile->putcsv($data);
+        return $this->csvFile->putcsv($data);
     }
 }
