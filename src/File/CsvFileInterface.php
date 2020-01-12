@@ -49,9 +49,9 @@ interface CsvFileInterface extends FileInterface
     /**
      * Returns all headers found in csv file.
      *
-     * @return array
+     * @return array|null|false
      */
-    public function getHeaders(): array;
+    public function getHeaders();
 
     /**
      * Sets file position to first data row.

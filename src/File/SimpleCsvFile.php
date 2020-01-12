@@ -75,9 +75,9 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     /**
      * Current parsed data in iteration process.
      *
-     * @var array
+     * @var mixed
      */
-    protected array $iteratorCurrentData = [];
+    protected $iteratorCurrentData = [];
 
     /**
      * Current iterator key.
@@ -103,9 +103,9 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     /**
      * The parsed headers.
      *
-     * @var array
+     * @var mixed
      */
-    protected array $headers = [];
+    protected $headers = [];
 
     /**
      * SimpleCsvFile constructor.
@@ -130,7 +130,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     /**
      * {@inheritDoc}
      */
-    public function getHeaders(): array
+    public function getHeaders()
     {
         // if headers are not set yet
         if (empty($this->headers)) {
@@ -192,6 +192,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
             // An intolerant implementation of combining data to keys would be:
             // return array_combine($this->getHeaders(), $rowData);
         }
+
         return $rowData;
     }
 
