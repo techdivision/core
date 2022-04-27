@@ -45,10 +45,11 @@ class CsvFileOutputAdapter implements OutputAdapterInterface
      *
      * @param string $csvFilename
      * @param string $csvSeparator
+     * @param string $openMode
      */
-    public function __construct(string $csvFilename, $csvSeparator = ";")
+    public function __construct(string $csvFilename, $csvSeparator = ";", $openMode = "w+")
     {
-        $this->csvFile = new SimpleCsvFile($csvFilename, $csvSeparator, "w+");
+        $this->csvFile = new SimpleCsvFile($csvFilename, $csvSeparator, $openMode);
     }
 
     /**
