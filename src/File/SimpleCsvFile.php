@@ -77,7 +77,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
      *
      * @var mixed
      */
-    protected $iteratorCurrentData = [];
+    protected mixed $iteratorCurrentData = [];
 
     /**
      * Current iterator key.
@@ -105,12 +105,12 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
      *
      * @var mixed
      */
-    protected $headers = [];
+    protected mixed $headers = [];
 
     /**
      * SimpleCsvFile constructor.
      *
-     * @param $filename
+     * @param string $filename
      * @param string $separator
      * @param string $open_mode
      * @param bool $use_include_path
@@ -171,7 +171,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     /**
      * {@inheritDoc}
      */
-    public function close()
+    public function close(): bool
     {
         return fclose($this->fileHandle);
     }
@@ -215,15 +215,15 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     /**
      * {@inheritDoc}
      */
-    public function seek($position)
+    public function seek($offset): int
     {
-        return fseek($this->fileHandle, $position);
+        return fseek($this->fileHandle, $offset);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function eof()
+    public function eof(): bool
     {
         return feof($this->fileHandle);
     }
@@ -239,18 +239,18 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     /**
      * {@inheritDoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         // set key to 0
         $this->iteratorKey = 0;
         // go to the beginning of the file
-        return rewind($this->fileHandle);
+        rewind($this->fileHandle);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->iteratorCurrentData;
     }
@@ -258,7 +258,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     /**
      * {@inheritDoc}
      */
-    public function key()
+    public function key(): mixed
     {
         return $this->iteratorKey;
     }
@@ -274,7 +274,7 @@ class SimpleCsvFile implements CsvFileInterface, \Iterator
     /**
      * {@inheritDoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         // goto data position if file pointer is at the beginning
         if ($this->tell() === 0) {
